@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="game" width="500" height="500"></canvas>
+<script>
+var ctx = document.getElementById('game').getContext('2d');
+
+var WIDTH = 500;
+var HEIGHT = 500;
+
+var Stars = {};
+
+var Star = function(x, y) {
+    var id = Math.random();
+    var self = {
+        x:x,
+        y:y,
+        id:id
+    };
+
+    Stars[id] = self;
+    return self;
+};
+
+Star(10, 20);
+Star(120, 200);
+Star(50, 340);
+
+var update = function() {
+    ctx.clearRect(0 ,0 ,WIDTH, HEIGHT);
+    for(var star in Stars) {
+        ctx.fillRect(Stars[star].x, Stars[star].y, 10, 10);
+    }
+}
+
+setInterval(function() {
+    update();
+}, 1000 / 25);
+</script>
+</body>
+</html>

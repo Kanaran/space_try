@@ -1,0 +1,22 @@
+{
+  "name": "valaran",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kanaran/valaran.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kanaran/valaran/issues"
+  },
+  "homepage": "https://github.com/Kanaran/valaran#readme",
+  "dependencies": {
+    "socket.io": "^1.4.6"
+  }
+}
