@@ -3,6 +3,7 @@
 
 # IntelliJ project files
 .idea
+.settings
 *.iml
 out
 gen### Node template
