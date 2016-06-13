@@ -2,7 +2,7 @@
  * Created by AV01NSF on 13.06.2016.
  */
 /* globals Valaran, Konva */
-Valaran.App = (function(Valaran, Konva, window, undefined) {
+Valaran.App = (function(Valaran, socket, Konva, window, undefined) {
     "use strict";
 
     function writeMessage(message) {
@@ -21,31 +21,32 @@ Valaran.App = (function(Valaran, Konva, window, undefined) {
 
     var layer = new Konva.Layer({});
 
-    for (var star in Valaran.Entities.Stars) {
-        var circle = new Konva.Circle({
-            x: Valaran.Entities.Stars[star].x + Valaran.Entities.Stars[star].radius,
-            y: Valaran.Entities.Stars[star].y + Valaran.Entities.Stars[star].radius,
-            radius: Valaran.Entities.Stars[star].radius,
-            fill: Valaran.Entities.Stars[star].color,
-            stroke: 'black',
-            strokeWidth: 1,
-            starId: Valaran.Entities.Stars[star].id
-        });
+    function drawStars() {
+        for (var star in Valaran.Entities.Stars) {
+            var circle = new Konva.Circle({
+                x: Valaran.Entities.Stars[star].x + Valaran.Entities.Stars[star].radius,
+                y: Valaran.Entities.Stars[star].y + Valaran.Entities.Stars[star].radius,
+                radius: Valaran.Entities.Stars[star].radius,
+                fill: Valaran.Entities.Stars[star].color,
+                stroke: 'black',
+                strokeWidth: 1,
+                starId: Valaran.Entities.Stars[star].id
+            });
 
-        circle.on('mousemove', function(event) {
-            var color = Valaran.Entities.Stars[event.target.attrs.starId].color;
-            var x = Valaran.Entities.Stars[event.target.attrs.starId].x;
-            var y = Valaran.Entities.Stars[event.target.attrs.starId].y;
-            writeMessage('ID: ' + event.target.attrs.starId + ', Farbe: ' + color + ', x: ' + x + ', y: ' + y);
-        });
+            circle.on('mousemove', function(event) {
+                var color = Valaran.Entities.Stars[event.target.attrs.starId].color;
+                var x = Valaran.Entities.Stars[event.target.attrs.starId].x;
+                var y = Valaran.Entities.Stars[event.target.attrs.starId].y;
+                writeMessage('ID: ' + event.target.attrs.starId + ', Farbe: ' + color + ', x: ' + x + ', y: ' + y);
+            });
 
-        circle.on('mouseout', function(event) {
-            writeMessage('');
-            window.console.log(event);
-        });
+            circle.on('mouseout', function(event) {
+                writeMessage('');
+            });
 
 
-        layer.add(circle);
+            layer.add(circle);
+        }
     }
 
     var text = new Konva.Text({
@@ -61,15 +62,24 @@ Valaran.App = (function(Valaran, Konva, window, undefined) {
 
     stage.add(layer);
 
+    socket.on('stars', function (data) {
+        Valaran.Entities.Stars = data;
+        drawStars();
+        layer.draw();
+    });
+
     var update = function() {
     };
 
     var draw = function() {
     };
 
+    socket.on('connect', function (data) {
+        
+    });
 
     setInterval(function() {
         update();
         draw();
     }, 1000 / 25);
-})(Valaran, Konva, window);
+})(Valaran, socket, Konva, window);
