@@ -23,8 +23,8 @@ Valaran.App = (function(Valaran, Konva, window, undefined) {
 
     for (var star in Valaran.Entities.Stars) {
         var circle = new Konva.Circle({
-            x: Valaran.Entities.Stars[star].x - Valaran.Entities.Stars[star].radius / 2,
-            y: Valaran.Entities.Stars[star].y - Valaran.Entities.Stars[star].radius / 2,
+            x: Valaran.Entities.Stars[star].x + Valaran.Entities.Stars[star].radius,
+            y: Valaran.Entities.Stars[star].y + Valaran.Entities.Stars[star].radius,
             radius: Valaran.Entities.Stars[star].radius,
             fill: Valaran.Entities.Stars[star].color,
             stroke: 'black',

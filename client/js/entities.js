@@ -32,11 +32,11 @@ Valaran.Entities = (function(Valaran, undefined) {
     while (i < 200) {
         var radius = 3 + Math.round(Math.random()*5);
 
-        var x = Math.round(Math.random() * window.innerWidth - 15 - radius);
-        if (x < 15 + radius) {
-            x = 15 + radius;
+        var x = Math.round(Math.random() * window.innerWidth - 5 - radius * 2);
+        if (x < 5 + radius) {
+            x = 5 + radius;
         }
-        var y = Math.round(Math.random() * window.innerHeight - 15 - radius);
+        var y = Math.round(Math.random() * window.innerHeight - 5 - radius * 2);
         if (y < 50 + radius) {
             y = 50 + radius;
         }
