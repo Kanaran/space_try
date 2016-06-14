@@ -6,20 +6,30 @@ Valaran.App = (function(Valaran, socket, Konva, window, document, undefined) {
     "use strict";
 
     function writeMessage(message) {
-        text.setText(message);
-        layer.draw();
+        if(message != null && message != '')
+            toastr.info(message, null, {preventDuplicates:true});
+        //text.setText(message);
+        //layer.draw();
     }
 
     var WIDTH = window.innerWidth;
     var HEIGHT = window.innerHeight;
+    var offsetX = 80;
+    var offsetY = 0;
+    var inGame = false;
 
     var stage = new Konva.Stage({
-        container: 'game',
+        container: 'field',
         width: WIDTH,
-        height: HEIGHT
+        height: HEIGHT - 70
     });
 
     var layer = new Konva.Layer({});
+
+    var group = new Konva.Group({
+        x: 0,
+        y: 0
+    });
 
     function drawStars() {
         for (var star in Valaran.Entities.Stars) {
@@ -45,7 +55,7 @@ Valaran.App = (function(Valaran, socket, Konva, window, document, undefined) {
             });
 
 
-            layer.add(circle);
+            group.add(circle);
         }
     }
 
@@ -59,7 +69,7 @@ Valaran.App = (function(Valaran, socket, Konva, window, document, undefined) {
     });
 
     layer.add(text);
-
+    layer.add(group);
     stage.add(layer);
 
     var update = function() {
@@ -88,8 +98,9 @@ Valaran.App = (function(Valaran, socket, Konva, window, document, undefined) {
             layer.draw();
             login_div.style.display = 'none';
             game_div.style.display = 'inline-block';
+            inGame = true;
         } else {
-            //TODO: Toast
+            toastr.error(data.msg);
             console.log(data);
         }
     });
@@ -106,6 +117,62 @@ Valaran.App = (function(Valaran, socket, Konva, window, document, undefined) {
             }, 1000 / 2);
         }
     }
+
+    $(document).keyup(function(ev) {
+        if (!inGame) return;
+
+        ev.preventDefault();
+        Valaran.Keymap.keyup(ev.keyCode);
+    });
+    $(document).keydown(function(ev) {
+        if (!inGame) return;
+
+        ev.preventDefault();
+        var qemuKey = Valaran.Keymap.keydown(ev.keyCode);
+        if(qemuKey) {
+            console.log(qemuKey);
+        }
+        if(qemuKey == 'left') {
+            var posX = layer.getAttr('x');
+            if(posX <= -10) {
+                offsetX = posX + 10;
+                layer.move({
+                    x: 10
+                });
+                layer.draw();
+            }            
+        }
+        if(qemuKey == 'right') {
+            var posX = layer.getAttr('x');
+            if(posX > window.innerWidth-2000) {
+                offsetX = posX - 10;
+                layer.move({
+                    x: -10
+                });
+                layer.draw();
+            }       
+        }
+        if(qemuKey == 'up') {
+            var posY = layer.getAttr('y');
+            if(posY <= -10) {
+                offsetY = posY + 10;
+                layer.move({
+                    y: 10
+                });
+                layer.draw();
+            }            
+        }
+        if(qemuKey == 'down') {
+            var posY = layer.getAttr('y');
+            if(posY > window.innerHeight-900) {
+                offsetY = posY - 10;
+                layer.move({
+                    y: -10
+                });
+                layer.draw();
+            }       
+        }
+    });
 
     setInterval(function() {
         update();

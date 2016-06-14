@@ -23,16 +23,8 @@ Star.init = function(cb) {
     var i = 0;
     while (i < 200) {
         var radius = 3 + Math.round(Math.random()*5);
-
         var x = Math.round(Math.random() * WIDTH);
-        if (x < 5 + radius) {
-            x = 5 + radius;
-        }
         var y = Math.round(Math.random() * HEIGHT);
-        if (y < 50 + radius) {
-            y = 50 + radius;
-        }
-
         var ok = true;
 
         for(var star in Star.list) {
