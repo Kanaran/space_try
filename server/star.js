@@ -1,21 +1,17 @@
-var Util = require('./util');
+var Entity = require('./entity');
 
 var Star = function(x, y, radius, color) {
-    var id = Util.generateUUID();
-    var self = {
-        id: id,
-        x: x,
-        y: y,
-        radius: radius,
-        color: color
-    };
+    var self = Entity(x, y);
+    self.radius = radius;
+    self.color = color;
 
+    var super_getDistance = self.getDistance;
     self.getDistance = function(entity) {
-        var a = self.x - entity.x;
-        var b = self.y - entity.y;
-        return Math.sqrt(a*a + b*b) - self.radius - entity.radius;
-    };
-    Star.list[id] = self;
+        var distance = super_getDistance(entity);
+        return distance - self.radius - entity.radius;
+    }
+    
+    Star.list[self.id] = self;
     return self;
 };
 

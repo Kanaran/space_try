@@ -2,7 +2,7 @@
  * Created by AV01NSF on 13.06.2016.
  */
 /* globals Valaran, Konva */
-Valaran.App = (function(Valaran, socket, Konva, window, undefined) {
+Valaran.App = (function(Valaran, socket, Konva, window, document, undefined) {
     "use strict";
 
     function writeMessage(message) {
@@ -62,24 +62,53 @@ Valaran.App = (function(Valaran, socket, Konva, window, undefined) {
 
     stage.add(layer);
 
-    socket.on('stars', function (data) {
-        Valaran.Entities.Stars = data;
-        drawStars();
-        layer.draw();
-    });
-
     var update = function() {
     };
 
     var draw = function() {
     };
 
-    socket.on('connect', function (data) {
-        
+    var login_div = document.getElementById('login');
+    var login_username = document.getElementById('username');
+    var login_password = document.getElementById('password');
+    var login_submit = document.getElementById('submit');
+    var game_div = document.getElementById('game');
+
+    login_submit.onclick = function() {
+        socket.emit('login', {
+            user:login_username.value,
+            pass:login_password.value
+        });
+    };
+
+    socket.on('login', function (data) {
+        if(data.success) {
+            Valaran.Entities.Stars = data.stars;
+            drawStars();
+            layer.draw();
+            login_div.style.display = 'none';
+            game_div.style.display = 'inline-block';
+        } else {
+            //TODO: Toast
+            console.log(data);
+        }
     });
+
+    var redraw = false;
+    window.onresize = function(event) {
+        if (redraw === false) {
+            redraw = true;
+            setTimeout(function() {
+                stage.width(window.innerWidth);
+                stage.height(window.innerHeight);
+                layer.draw();
+                redraw = false;
+            }, 1000 / 2);
+        }
+    }
 
     setInterval(function() {
         update();
         draw();
     }, 1000 / 25);
-})(Valaran, socket, Konva, window);
+})(Valaran, socket, Konva, window, document);
