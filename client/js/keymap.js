@@ -1,3 +1,4 @@
+/* globals Valaran */
 Valaran.Keymap = (function() {
     "use strict";
 
@@ -95,17 +96,17 @@ Valaran.Keymap = (function() {
         , 221: 'bracket_right'
         , 222: '\''
         , 224: 'ctrl' // command in firefox
-    }
+    };
 
     var keydown = function(keycode) {
         var mapping = keymap[keycode];
         if (!mapping) return null;
 
-        if (mapping == 'shift') {
+        if (mapping === 'shift') {
             shifting = true; return null;
-        } else if (mapping == 'ctrl') {
+        } else if (mapping === 'ctrl') {
             ctrling = true; return null;
-        } else if (mapping == 'alt') {
+        } else if (mapping === 'alt') {
             alting = true; return null;
         }
 
@@ -115,22 +116,22 @@ Valaran.Keymap = (function() {
         if (alting) prefix += 'alt-';
 
         return prefix + mapping;
-    }
+    };
 
     var keyup = function(keycode) {
         var mapping = keymap[keycode];
         
-        if (mapping == 'shift') {
+        if (mapping === 'shift') {
             shifting = false;
-        } else if (mapping == 'ctrl'){
+        } else if (mapping === 'ctrl'){
             ctrling = false;
-        } else if (mapping == 'alt') {
+        } else if (mapping === 'alt') {
             alting = false;
         }
-    }
+    };
 
     return {
         keydown:keydown,
         keyup:keyup
-    }
+    };
 })();

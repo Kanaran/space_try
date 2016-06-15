@@ -1,3 +1,4 @@
+/* globals Valaran */
 Valaran.Server = (function() {
     "use strict";
 
@@ -5,5 +6,5 @@ Valaran.Server = (function() {
 
     return {
         game_settings: Game_Settings
-    }
+    };
 })();

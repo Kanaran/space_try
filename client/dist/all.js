@@ -182,3 +182,211 @@ Valaran.App = (function(Valaran, socket, Konva, toastr, window, document, undefi
         draw();
     }, 1000 / 25);
 })(Valaran, socket, Konva, toastr, window, document);
+/**
+ * Created by AV01NSF on 13.06.2016.
+ */
+/* globals Valaran */
+Valaran.Entities = (function(Valaran, undefined) {
+    "use strict";
+
+    var Stars = {};
+
+    var Star = function (x, y, radius, color) {
+        var id = Valaran.Util.generateUUID();//Math.random();
+        var self = {
+            x: x,
+            y: y,
+            radius: radius,
+            color: color,
+            id: id
+        };
+
+        self.getDistance = function(entity) {
+            var a = self.x - entity.x;
+            var b = self.y - entity.y;
+            return Math.sqrt(a*a + b*b) - self.radius - entity.radius;
+        };
+
+        Stars[id] = self;
+        return self;
+    };
+
+    
+
+    return {
+        Stars: Stars,
+        Star: Star
+    };
+})(Valaran);
+/* globals Valaran */
+Valaran.Keymap = (function() {
+    "use strict";
+
+    var shifting = false;
+    var ctrling = false;
+    var alting = false;
+
+    var keymap = {
+        8: 'backspace'
+        , 9: 'tab'
+        , 13: 'ret'
+        , 16: 'shift'
+        , 17: 'ctrl'
+        , 18: 'alt'
+        , 19: '?'// pause
+        , 20: 'caps_lock'
+        , 27: 'esc'
+        , 32: 'spc'
+        , 33: 'pgup'
+        , 34: 'pgdn'
+        , 35: 'end'
+        , 36: 'home'
+        , 37: 'left'
+        , 38: 'up'
+        , 39: 'right'
+        , 40: 'down'
+        , 44: 'print'
+        , 45: 'insert'
+        , 46: 'delete'
+        , 48: '0'
+        , 49: '1'
+        , 50: '2'
+        , 51: '3'
+        , 52: '4'
+        , 53: '5'
+        , 54: '6'
+        , 55: '7'
+        , 56: '8'
+        , 57: '9'
+        , 59: 'semicolon'
+        , 61: 'equal'
+        , 65: 'a'
+        , 66: 'b'
+        , 67: 'c'
+        , 68: 'd'
+        , 69: 'e'
+        , 70: 'f'
+        , 71: 'g'
+        , 72: 'h'
+        , 73: 'i'
+        , 74: 'j'
+        , 75: 'k'
+        , 76: 'l'
+        , 77: 'm'
+        , 78: 'n'
+        , 79: 'o'
+        , 80: 'p'
+        , 81: 'q'
+        , 82: 'r'
+        , 83: 's'
+        , 84: 't'
+        , 85: 'u'
+        , 86: 'v'
+        , 87: 'w'
+        , 88: 'x'
+        , 89: 'y'
+        , 90: 'z'
+        , 91: 'ctrl' // left command
+        , 93: 'ctrl' // right command
+        , 107: 'equal'
+        , 109: 'minus'
+        , 112: 'f1'
+        , 113: 'f2'
+        , 114: 'f3'
+        , 115: 'f4'
+        , 116: 'f5'
+        , 117: 'f6'
+        , 118: 'f7'
+        , 119: 'f8'
+        , 120: 'f9'
+        , 121: 'f10'
+        , 122: 'f11'
+        , 123: 'f12'
+        , 144: 'num_lock'
+        , 145: 'scroll_lock'
+        , 186: 'semicolon'
+        , 187: 'equal'
+        , 188: 'comma'
+        , 189: 'minus'
+        , 190: 'dot'
+        , 191: 'slash'
+        , 192: 'apostrophe'
+        , 219: 'bracket_left'
+        , 220: 'backslash'
+        , 221: 'bracket_right'
+        , 222: '\''
+        , 224: 'ctrl' // command in firefox
+    };
+
+    var keydown = function(keycode) {
+        var mapping = keymap[keycode];
+        if (!mapping) return null;
+
+        if (mapping === 'shift') {
+            shifting = true; return null;
+        } else if (mapping === 'ctrl') {
+            ctrling = true; return null;
+        } else if (mapping === 'alt') {
+            alting = true; return null;
+        }
+
+        var prefix = '';
+        if (shifting) prefix += 'shift-';
+        if (ctrling) prefix += 'ctrl-';
+        if (alting) prefix += 'alt-';
+
+        return prefix + mapping;
+    };
+
+    var keyup = function(keycode) {
+        var mapping = keymap[keycode];
+        
+        if (mapping === 'shift') {
+            shifting = false;
+        } else if (mapping === 'ctrl'){
+            ctrling = false;
+        } else if (mapping === 'alt') {
+            alting = false;
+        }
+    };
+
+    return {
+        keydown:keydown,
+        keyup:keyup
+    };
+})();
+/* globals Valaran */
+Valaran.Server = (function() {
+    "use strict";
+
+    var Game_Settings = {};
+
+    return {
+        game_settings: Game_Settings
+    };
+})();
+/**
+ * Created by AV01NSF on 13.06.2016.
+ */
+/* jslint bitwise: true */
+/* globals Valaran */
+Valaran.Util = (function(Date, window, Math, undefined) {
+    "use strict";
+
+    var generateUUID = function (){
+        var d = Date.now();
+        if(window.performance && typeof window.performance.now === "function"){
+            d += performance.now(); //use high-precision timer if available
+        }
+        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = (d + Math.random()*16)%16 | 0;
+            d = Math.floor(d/16);
+            return (c==='x' ? r : (r&0x3|0x8)).toString(16);
+        });
+        return uuid;
+    };
+
+    return {
+        generateUUID: generateUUID
+    };
+})(Date, window, Math);

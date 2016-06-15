@@ -18,7 +18,7 @@ var Star = function(x, y, radius, color) {
 Star.settings = {
     WIDTH: 2000,
     HEIGHT: 2000
-}
+};
 Star.list = {};
 Star.init = function(cb) {
     var Colors = ['red', 'blue', 'green', 'yellow', 'white', 'purple', 'orange'];
