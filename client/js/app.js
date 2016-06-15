@@ -93,6 +93,7 @@ Valaran.App = (function(Valaran, socket, Konva, window, document, undefined) {
 
     socket.on('login', function (data) {
         if(data.success) {
+            Valaran.Server.game_settings = data.game_settings;
             Valaran.Entities.Stars = data.stars;
             drawStars();
             layer.draw();
@@ -128,48 +129,45 @@ Valaran.App = (function(Valaran, socket, Konva, window, document, undefined) {
         if (!inGame) return;
 
         ev.preventDefault();
-        var qemuKey = Valaran.Keymap.keydown(ev.keyCode);
-        if(qemuKey) {
-            console.log(qemuKey);
-        }
-        if(qemuKey == 'left') {
+        var keypressed = Valaran.Keymap.keydown(ev.keyCode);
+        if(keypressed == 'left') {
             var posX = layer.getAttr('x');
             if(posX <= -10) {
                 offsetX = posX + 10;
                 layer.move({
                     x: 10
                 });
-                layer.draw();
+                layer.batchDraw();
             }            
         }
-        if(qemuKey == 'right') {
+        if(keypressed == 'right') {
             var posX = layer.getAttr('x');
-            if(posX > window.innerWidth-2000) {
+            if(posX > window.innerWidth - Valaran.Server.game_settings.WIDTH - 10) {
                 offsetX = posX - 10;
                 layer.move({
                     x: -10
                 });
-                layer.draw();
+                layer.batchDraw();
             }       
         }
-        if(qemuKey == 'up') {
+        if(keypressed == 'up') {
             var posY = layer.getAttr('y');
             if(posY <= -10) {
                 offsetY = posY + 10;
                 layer.move({
                     y: 10
                 });
-                layer.draw();
+                layer.batchDraw();
             }            
         }
-        if(qemuKey == 'down') {
+        if(keypressed == 'down') {
             var posY = layer.getAttr('y');
-            if(posY > window.innerHeight-900) {
+            if(posY > window.innerHeight - Valaran.Server.game_settings.HEIGHT - 80) {
                 offsetY = posY - 10;
                 layer.move({
                     y: -10
                 });
-                layer.draw();
+                layer.batchDraw();
             }       
         }
     });

@@ -29,7 +29,7 @@ io.on('connection', function (socket) {
         if(err) {
             socket.emit('login', { success:false, msg:err });
         } else {
-            socket.emit('login', { success:true, stars:Star.list });
+            socket.emit('login', { success:true, stars:Star.list, game_settings:Star.settings });
         }
     });
 

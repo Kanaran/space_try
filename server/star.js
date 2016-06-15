@@ -15,16 +15,18 @@ var Star = function(x, y, radius, color) {
     return self;
 };
 
+Star.settings = {
+    WIDTH: 2000,
+    HEIGHT: 2000
+}
 Star.list = {};
 Star.init = function(cb) {
-    var WIDTH = 2000;
-    var HEIGHT = 800;
     var Colors = ['red', 'blue', 'green', 'yellow', 'white', 'purple', 'orange'];
     var i = 0;
-    while (i < 200) {
+    while (i < 500) {
         var radius = 3 + Math.round(Math.random()*5);
-        var x = Math.round(Math.random() * WIDTH);
-        var y = Math.round(Math.random() * HEIGHT);
+        var x = Math.round(Math.random() * Star.settings.WIDTH);
+        var y = Math.round(Math.random() * Star.settings.HEIGHT);
         var ok = true;
 
         for(var star in Star.list) {
