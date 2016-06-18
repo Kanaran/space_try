@@ -218,6 +218,7 @@ Valaran.Entities = (function(Valaran, undefined) {
         Star: Star
     };
 })(Valaran);
+/* jslint laxcomma: true */
 /* globals Valaran */
 Valaran.Keymap = (function() {
     "use strict";

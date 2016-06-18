@@ -32,7 +32,7 @@ Valaran.App = (function(Valaran, socket, Konva, toastr, window, document, undefi
         y: 0
     });
 
-    function star_mousemove(event) {
+    var star_mousemove = function (event) {
         var color = Valaran.Entities.Stars[event.target.attrs.starId].color;
         var x = Valaran.Entities.Stars[event.target.attrs.starId].x;
         var y = Valaran.Entities.Stars[event.target.attrs.starId].y;
@@ -54,7 +54,7 @@ Valaran.App = (function(Valaran, socket, Konva, toastr, window, document, undefi
                 strokeWidth: 1,
                 starId: Valaran.Entities.Stars[star].id
             })
-            .on('mousemove', star_mousemove(event))
+            .on('mousemove', star_mousemove)
             .on('mouseout', star_mouseout);
 
             group.add(circle);

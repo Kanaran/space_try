@@ -1,3 +1,4 @@
+/* jslint laxcomma: true */
 /* globals Valaran */
 Valaran.Keymap = (function() {
     "use strict";
